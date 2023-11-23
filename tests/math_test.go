@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"math/big"
 	"testing"
+	"time"
 )
 
 func TestBig(t *testing.T) {
-	id := int64(271_828)
+	id := time.Now().UnixMicro()
 	s := big.NewInt(id).Text(62)
 	fmt.Println(s) // 18Ik
 
