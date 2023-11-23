@@ -6,7 +6,7 @@ import (
 )
 
 func TestRand(t *testing.T) {
-	s, err := Rand(32)
+	s, err := Rand(10)
 	if err != nil {
 		t.Error(err)
 	}
