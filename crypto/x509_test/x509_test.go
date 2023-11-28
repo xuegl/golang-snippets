@@ -1,14 +1,16 @@
-package pem
+package pem_test
 
 import (
 	"fmt"
+	"github.com/snow/golang-snippets/crypto/x509"
 	"github.com/stretchr/testify/assert"
+	"path/filepath"
 	"testing"
 	"time"
 )
 
 func TestLoadCertificate(t *testing.T) {
-	certificate, err := LoadCertificateWithPath("./resources/test_cert.pem")
+	certificate, err := x509.LoadCertificateWithPath("./resources/test_cert.pem")
 	if err != nil {
 		t.Error(err)
 	}
@@ -16,11 +18,11 @@ func TestLoadCertificate(t *testing.T) {
 	fmt.Printf("Subject: %#v\n", certificate.Subject)
 	fmt.Printf("NotBefore: %#v\n", certificate.NotBefore.Format("2006-01-02 15:04:05"))
 	fmt.Printf("NotAfter: %#v\n", certificate.NotAfter.Format("2006-01-02 15:04:05"))
-	assert.True(t, IsCertificateValid(certificate, time.Now()))
+	assert.True(t, x509.IsCertificateValid(certificate, time.Now()))
 }
 
 func TestLoadPublicKeyWithPath(t *testing.T) {
-	publicKey, err := LoadPublicKeyWithPath("./resources/test_pub.pem")
+	publicKey, err := x509.LoadPublicKeyWithPath(filepath.Join("testdata", "test_pub.pem"))
 	if err != nil {
 		t.Error(err)
 	}
@@ -28,7 +30,7 @@ func TestLoadPublicKeyWithPath(t *testing.T) {
 }
 
 func TestLoadPrivateKey(t *testing.T) {
-	privateKey, err := LoadPrivateKeyWithPath("./resources/test_priv.pem")
+	privateKey, err := x509.LoadPrivateKeyWithPath(filepath.Join("testdata", "test_priv.pem"))
 	if err != nil {
 		t.Error(err)
 	}
