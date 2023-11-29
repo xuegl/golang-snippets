@@ -8,6 +8,10 @@ import (
 	"fmt"
 )
 
+func GenerateKey(size int) (*rsa.PrivateKey, error) {
+	return rsa.GenerateKey(rand.Reader, size)
+}
+
 // SignSHA256WithRSA 通过私钥对字符串以 SHA256WithRSA 算法生成签名信息
 func SignSHA256WithRSA(source string, privateKey *rsa.PrivateKey) (signature string, err error) {
 	if privateKey == nil {
