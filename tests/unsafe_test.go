@@ -2,7 +2,9 @@ package tests
 
 import (
 	"fmt"
+	"runtime"
 	"testing"
+	"time"
 	"unsafe"
 )
 
@@ -56,5 +58,43 @@ func TestUnsafeStringData(t *testing.T) {
 	buf := unsafe.Slice(unsafe.StringData(s), len(s))
 	for _, b := range buf {
 		println(b)
+	}
+}
+
+func TestUnsafe_Finalizer(t *testing.T) {
+	type Foo struct {
+		name string
+	}
+
+	finalizer := func(f *Foo) {
+		fmt.Printf("Foo[%s] is recycled\n", f.name)
+	}
+
+	newFoo := func(name string) *Foo {
+		foo := &Foo{
+			name: name,
+		}
+		runtime.SetFinalizer(foo, finalizer)
+		return foo
+	}
+
+	allocLargeObj := func() *[1000000]int64 {
+		a := [1000000]int64{}
+		return &a
+	}
+
+	p1 := uintptr(unsafe.Pointer(newFoo("FooRefByUnitptr")))
+	p2 := unsafe.Pointer(newFoo("FooRefByPointer"))
+
+	for i := 0; i < 5; i++ {
+		allocLargeObj()
+		q1 := (*Foo)(unsafe.Pointer(p1))
+		fmt.Printf("object ref by uintptr: %+v\n", *q1)
+
+		q2 := (*Foo)(p2)
+		fmt.Printf("object ref by pointer: %+v\n", *q2)
+
+		runtime.GC()
+		time.Sleep(1 * time.Second)
 	}
 }
