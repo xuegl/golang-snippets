@@ -1,6 +1,8 @@
 package strings
 
-import "crypto/rand"
+import (
+	"crypto/rand"
+)
 
 const (
 	RandomSymbols       = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"

@@ -10,7 +10,7 @@ import (
 )
 
 func TestLoadCertificate(t *testing.T) {
-	certificate, err := x509.LoadCertificateWithPath("./resources/test_cert.pem")
+	certificate, err := x509.LoadCertificateWithPath(filepath.Join("testdata", "test_cert.pem"))
 	if err != nil {
 		t.Error(err)
 	}

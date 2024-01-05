@@ -98,3 +98,16 @@ func TestUnsafe_Finalizer(t *testing.T) {
 		time.Sleep(1 * time.Second)
 	}
 }
+
+func TestUnsafe_Sizeof(t *testing.T) {
+	var (
+		s  string
+		ss []string
+		si []int
+		m  map[string]string
+	)
+	fmt.Printf("string size: %d\n", unsafe.Sizeof(s))
+	fmt.Printf("string slice header size: %d\n", unsafe.Sizeof(ss))
+	fmt.Printf("int slice header size: %d\n", unsafe.Sizeof(si))
+	fmt.Printf("map header size: %d\n", unsafe.Sizeof(m))
+}
